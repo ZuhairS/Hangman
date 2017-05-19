@@ -22,17 +22,60 @@ class Hangman
   end
 
   def update_board(indices)
-    
+    indices.each { |idx| @board[idx] = @referee.secret_word }
   end
 
 end
 
 class HumanPlayer
+
+  attr_reader :dictionary, :secret_word
+
+  def initialize(dictionary)
+    @dictionary = dictionary
+    @secret_word = ""
+  end
+
+  def pick_secret_word
+    print "Please enter your secret word: "
+    @secret_word = gets.chomp
+    until dictionary.include?(@secret_word)
+      puts "\nPlease enter a word from the dictionary!\n"
+      pick_secret_word
+    end
+    @secret_word.length
+  end
+
+  def register_secret_length(secret_word_length)
+    puts "The secret word has #{secret_word_length} letters.\n"
+  end
+
+  def check_guess(char)
+    alphabets = ("a".."z").to_a
+    raise "Not a valid character!" if !alphabets.include?(char.downcase)
+    (0...@secret_word.length).select do |index|
+      @secret_word[index] == char.downcase
+    end
+  end
+
+  def guess(board)
+    print "\nPlease enter your guess letter: "
+    gets.chomp
+  end
+
+  def handle_response(guess, indices_arr)
+    
+  end
+
+  def candidate_words
+    @dictionary
+  end
+
 end
 
 class ComputerPlayer
 
-  attr_reader :dictionary
+  attr_reader :dictionary, :secret_word
 
   def initialize(dictionary)
     @dictionary = dictionary
