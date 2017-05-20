@@ -17,12 +17,12 @@ class Hangman
   def take_turn
     guess = @guesser.guess
     indices = @referee.check_guess(guess)
-    update_board(indices)
+    update_board(guess, indices)
     @guesser.handle_response
   end
 
-  def update_board(indices)
-    indices.each { |idx| @board[idx] = @referee.secret_word }
+  def update_board(guess, indices)
+    indices.each { |idx| @board[idx] = guess }
   end
 
 end
@@ -64,7 +64,7 @@ class HumanPlayer
   end
 
   def handle_response(guess, indices_arr)
-    
+    @board.each { |el| el.nil? ? (print " ") : (print el) }
   end
 
   def candidate_words
